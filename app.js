@@ -24,6 +24,7 @@ app.get('/check', (req, res) => {
       res.send(500);
     } else {
       res.json({
+        demoIp: req.connection.remoteAddress,
         approachingOver: utils.approachingOver(rate.current, rate.limit),
         current: rate.current,
         over: rate.over
@@ -31,5 +32,9 @@ app.get('/check', (req, res) => {
     };
   });
 });
+
+app.get('/flushall', (req, res) => {
+  res.send(redisClient.flushall());
+})
 
 app.listen(process.env.PORT || 3000, () => { console.log('started')})
