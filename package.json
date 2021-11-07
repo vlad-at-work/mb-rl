@@ -1,10 +1,13 @@
 {
   "name": "mb-limiter",
   "version": "1.0.0",
+  "engines": {
+    "node": "12.16.1"
+  },
   "description": "Rate limiter service for MB",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "node index.js",
     "test": "jest --config ./jest.config.js"
   },
   "author": "Vlad",
