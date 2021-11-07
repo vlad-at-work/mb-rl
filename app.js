@@ -1,15 +1,17 @@
 const express = require('express');
 const rateLimiter = require('redis-rate-limiter');
 const redis = require('redis');
-//rediss://:@:
-const redisClient = redis.createClient(16520, 'ec2-54-166-176-119.compute-1.amazonaws.com', { enable_offline_queue: false });
-redisClient.auth('p1f546bcc4f65e4ba0b4af2d2f670f8c04960b077e30e9ef12984ca83458a4676', () => { console.log('connected redis')});
-
 const utils = require('./utils/misc');
 
 const app = express();
 
-const limit = rateLimiter.create({
+let limit;
+const redisClient = redis.createClient(16519, 'ec2-54-166-176-119.compute-1.amazonaws.com', { enable_offline_queue: false, reconnect_attempts: 10 });
+redisClient.auth('p1f546bcc4f65e4ba0b4af2d2f670f8c04960b077e30e9ef12984ca83458a4676', () => { 
+  console.log('connected redis')
+});
+
+limit = rateLimiter.create({
   redis: redisClient,
   key: 'ip', // function(x) { return x.headers['user-agent']; },
   rate: '10/minute'
@@ -30,4 +32,4 @@ app.get('/check', (req, res) => {
   });
 });
 
-module.exports = app;
+app.listen(process.env.PORT || 3000, () => { console.log('started')})
