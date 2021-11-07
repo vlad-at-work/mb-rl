@@ -1,7 +1,9 @@
 const express = require('express');
 const rateLimiter = require('redis-rate-limiter');
 const redis = require('redis');
-const redisClient = redis.createClient(6379, 'localhost', { enable_offline_queue: false });
+//rediss://:@:
+const redisClient = redis.createClient(16520, 'ec2-54-166-176-119.compute-1.amazonaws.com', { enable_offline_queue: false });
+redisClient.auth('p1f546bcc4f65e4ba0b4af2d2f670f8c04960b077e30e9ef12984ca83458a4676', () => { console.log('connected redis')});
 
 const utils = require('./utils/misc');
 
