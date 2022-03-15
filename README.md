@@ -4,9 +4,11 @@
 
 ### Approach
 
+**4 months later edit: this would work better as an internal Gateway**
+
 I figured there are two main pieces to a rate limiter service: the limiter implementation itself and the service aspect of the project.
 
-Working off the assumption that the *service* piece is more important than any specific impmlementation, my first instinct when hearing "rate limiter" was to reach for Redis. I ended up using the Redis-backed `redis-rate-limiter` [module](https://github.com/Tabcorp/redis-rate-limiter) which uses a *fixed-window* rate limiting algorithm (though not the only one in existence, seemed appropriate for a MVP)
+Working off the assumption that the *service* piece is more important than any specific implementation, my first instinct when hearing "rate limiter" was to reach for Redis. I ended up using the Redis-backed `redis-rate-limiter` [module](https://github.com/Tabcorp/redis-rate-limiter) which uses a *fixed-window* rate limiting algorithm (though not the only one in existence, seemed appropriate for a MVP)
 
 As a MVP, the `express`-backed node server exposes a single `GET` endpoint `/check`. At the moment, the app is configured to use the incoming IP as a key to keep track of activity / rate. `redis-rate-limiter` library provides a flexible way to configure this as per the challenge's requirements: anything provided in the `request` can be used as a key. The rate is hardcoded in a format consumable by `moment` (eg: `10/minute` or `5/second` - more on this later)
 
